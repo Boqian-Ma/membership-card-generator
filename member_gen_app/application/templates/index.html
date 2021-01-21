@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+<title>Generate member</title>
+{% endblock %}
+
+
+{% block body %}
+<div class="container">
+    <h1>Generate Membership Card</h1>
+    <form action="/generate" method="POST" enctype=multipart/form-data>
+        <div class="form-row row">
+            <div class="form-group col-6">
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" class="form-control" name="firstName" id="firstName" required>
+            </div>
+            <div class="form-group col-6">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input type="text" class="form-control" name="lastName" id="lastName" required>
+            </div>
+        </div>
+        <div class="form-group mb-3">
+          <label for="cardNumber" class="form-label">Card Number (UID)</label>
+          <input type="number" class="form-control" name="cardNumber" id="cardNumber" required>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="walletAddress" class="form-label">Wallet Address</label>
+            <input type="text" class="form-control" name="walletAddress" id="walletAddress" required>
+        </div>
+
+        <!-- <div class="form-row row" id="coin-type">
+            <label for="coin-type" class="form-label">Coins</label>
+
+            <div class="form-group col-1">
+                <input  type="checkbox" id="btc" name="coins" value="BTC">
+                <label for="btc">BTC</label>
+            </div>
+    
+            <div class="form-group col-1">
+                <input type="checkbox" id="eth" name="coins" value="ETH">
+                <label for="eth">ETH</label>
+            </div>
+    
+            <div class="form-group col-1">
+                <input type="checkbox" id="pmgt" name="coins" value="PMGT">
+                <label for="pmgt">PMGT</label>
+            </div>
+    
+            <div class="form-group col-1">
+                <input type="checkbox" id="ustd" name="coins" value="USDT">
+                <label for="ustd">USDT</label>
+            </div>
+
+        
+        </div> -->
+
+
+        <div class="form-row row">
+            <label for="user-types">Select User Level</label>
+            <div class="form-group col-6" id="user-types" ></div>
+        </div>
+
+        <br>
+        <div class="form-row row">
+            <div class="form-group col-4">
+                <label for="qrCode"> Upload Wallet QR Code (.png, .jpeg, .jpg only)</label>
+                <input type="file" id="qrCode" class="form-control-file" name="qrCode" accept="image/png, image/jpeg, image/jpg" required>
+            </div>
+        </div>
+
+        <br>
+        <div class="form-row row">
+            <div class="col-auto">
+                <label for="start-month-list" class="col-form-label">Start Date</label>
+            </div>
+            <div class="form-group col-auto" id="start-month-list" name="startMonth"></div>
+            <div class="form-group col-auto" id="start-year-list" name="startYear"></div>
+            <div class="col-auto">
+                <label for="end-month-list" class="col-form-label">End Date</label>
+            </div>
+            <div class="form-group col-auto" id="end-month-list" name="endMonth"></div>
+            <div class="form-group col-auto" id="end-year-list" name="endYear"></div>
+        </div>
+        <br>
+        
+        <div class="form-row row" >
+            <!-- <div class="col-1 form-group">
+                <button type="submit" class="btn btn-secondary">Preview</button>
+            </div> -->
+            <div class="col-1 form-group">
+                <!-- <input type="submit" class="btn btn-primary" value="Create"> -->
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+        </div>
+      </form>
+</div>
+<br>
+
+
+<script>
+    (function () {
+        get_user_types()
+        get_years("start")
+        get_years("end")
+        get_months("start")
+        get_months("end")
+    })();
+
+    function get_years(when) {
+        var year_start = (new Date).getFullYear() - 2;
+        var year_end = 2100 
+        var selected_year = 0; //1992, 0 first option
+    
+        var option = '<select class="form-select" id="' + when + 'Year" name="' + when + 'Year" required>';
+        option += '<option value="0">Year</option>';  //first option
+        for (var i = 0; i <= (year_end - year_start); i++) {
+            var year = (year_start+i);
+            option += '<option value="' + year + '"'+(year == selected_year ? ' selected' : '')+'>' + year + '</option>';
+        }
+        option += '</select>';
+        document.getElementById(when + '-year-list').innerHTML = option;
+    }
+
+    function get_months(when) {
+        var month_start = 1;
+        var month_end = 12;
+        var selected_month = 0;
+        var month_option = '<select class="form-select " id="' + when + 'Month" name="' + when + 'Month" required>';
+        month_option += '<option value="0">Month</option>';
+        for (var j = 0; j <= (month_end - month_start); j++) {
+            var month = (month_start + j);
+            month_option += '<option value="' + month + '"'+(month == selected_month ? ' selected' : '')+'>' + month + '</option>';
+        }
+        document.getElementById(when + '-month-list').innerHTML = month_option;
+    }
+
+    function get_user_types() {
+        const types = {
+            "CU": "Customer",
+            "RE": "Referrer",
+            "BR": "Brocker",
+            "DL": "Dealer",
+            "CAT": "Certified AUD Trader",
+            "CUT": "Certified USD Trader",
+            "CCT": "Certified CAD Trader",
+            "CST": "Certified SGD Trader",
+            "D": "Certified Operator"
+        }
+        // First value
+        var user_options = '<select class="form-select form-group col-2" name="userType" required>';
+        for (var key in types) {
+            user_options += '<option value="' + key + '">' + types[key] + ' - ' +  key + '</option>';
+        }
+        console.log(user_options)
+        document.getElementById('user-types').innerHTML = user_options;
+    }
+    </script>
+{% endblock %}
+
+
+
