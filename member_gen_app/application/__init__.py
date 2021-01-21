@@ -13,6 +13,7 @@ BASE_IMAGE_DIR = "/Users/sdce/Documents/GitHub/membership-card-generator/member_
 # Path to members saving filder
 MEMBER_IMAGE_DIR = "/Users/sdce/Documents/GitHub/membership-card-generator/members"
 
+FONT_PATH = "/Library/Fonts/Microsoft/stixgeneral-regular.otf"
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = "/Users/sdce/Documents/GitHub/membership-card-generator/member_gen_app/application/uploads"

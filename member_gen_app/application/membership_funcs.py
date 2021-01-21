@@ -1,6 +1,7 @@
+from member_gen_app.application import FONT_PATH
 from PIL import Image, ImageFont, ImageDraw 
 import os
-from application import app, BASE_IMAGE_DIR, MEMBER_IMAGE_DIR
+from application import app, BASE_IMAGE_DIR, MEMBER_IMAGE_DIR, FONT_PATH
 from werkzeug.utils import secure_filename
 # my_image = Image.open("asset/Standard-Card-Template.png")
 
@@ -85,9 +86,9 @@ def generate_image(data, qr_path):
     base.paste(logo, offset)
     title_size = 30
     wallet_size = 20
-    title_font = ImageFont.truetype("/Library/Fonts/Microsoft/stixgeneral-regular.otf", title_size)
+    title_font = ImageFont.truetype(FONT_PATH, title_size)
     # title_font = ImageFont.truetype("/Library/Fonts/Monaco.dfont", title_size)
-    wallet_font = ImageFont.truetype("/Library/Fonts/Microsoft/stixgeneral-regular.otf", wallet_size)
+    wallet_font = ImageFont.truetype(FONT_PATH, wallet_size)
 
     # offsets
     member_id_text = data["user_type"] + "-" + data["UID"]
