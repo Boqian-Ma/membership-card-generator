@@ -1,3 +1,5 @@
-/venv/
-.DS_Store
-/__pycache__/
+member_gen_app/venv/
+/.DS_Store/
+member_gen_app/application/__pycache__/
+member_gen_app/application/uploads/*.png
+members/*.png
