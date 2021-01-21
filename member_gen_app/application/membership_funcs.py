@@ -1,4 +1,3 @@
-from member_gen_app.application import FONT_PATH
 from PIL import Image, ImageFont, ImageDraw 
 import os
 from application import app, BASE_IMAGE_DIR, MEMBER_IMAGE_DIR, FONT_PATH
@@ -11,11 +10,30 @@ BASE_IMAGES = {
     "CT" : BASE_IMAGE_DIR + "/CT_base.jpg",
     "CU" : BASE_IMAGE_DIR + "/CU_base.jpg",
     "D" : BASE_IMAGE_DIR + "/D_base.jpg", 
-    "RE" : BASE_IMAGE_DIR + "/RE_base.jpg"
+    "RE" : BASE_IMAGE_DIR + "/RE_base.jpg",
+    "DL" : BASE_IMAGE_DIR + "/DL_base.jpg"
 }
 
 # Types of certified traders in different currencies
 CERTIFIED_TRADER = ["CAT", "CUT", "CCT", "CST"]
+
+def remove_white_pixels(img):
+    """Remove all white pixels 
+    Taken from https://stackoverflow.com/questions/765736/how-to-use-pil-to-make-all-white-pixels-transparent
+    """
+    img = img.convert("RGBA")
+    datas = img.getdata()
+    newData = []
+    for item in datas:
+        if item[0] == 255 and item[1] == 255 and item[2] == 255:
+            newData.append((255, 255, 255, 0))
+        else:
+            if item[0] > 150:
+                newData.append((0, 0, 0, 255))
+            else:
+                newData.append(item)
+    img.putdata(newData)
+    return img
 
 def create_user_folder(first_name, last_name, UID):
     """
@@ -69,13 +87,18 @@ def get_form_data(form):
 #     return os.path.join(app.config['UPLOAD_FOLDER'], filename)
 
 def generate_image(data, qr_path):
-    base = Image.open(BASE_IMAGES[data["user_type"]])
-    logo = Image.open(qr_path)
+    base = Image.open(BASE_IMAGES[data["user_type"]]).convert("RGBA")
+    logo = Image.open(qr_path).convert("RGBA")
+    
 
     base_w, base_h = base.size
     QRSIZE = int(base_w/7)
     # Resize image to keep ratio
     logo = logo.resize((QRSIZE, QRSIZE), Image.ANTIALIAS)
+    # Remove white background
+    # logo = remove_white_pixels(logo)
+
+    # logo.show()
     base = base.resize((1005, 639), Image.ANTIALIAS)
     logo_w, logo_h = logo.size
     # QR code offset
@@ -83,7 +106,8 @@ def generate_image(data, qr_path):
     offset_h = round(2.5 * logo_h)
     offset = (offset_w, offset_h)
     # Paste qr code
-    base.paste(logo, offset)
+
+    base.paste(logo, offset, logo)
     title_size = 30
     wallet_size = 20
     title_font = ImageFont.truetype(FONT_PATH, title_size)
@@ -95,7 +119,7 @@ def generate_image(data, qr_path):
     member_id_text_offset_w = 90
     member_id_text_offset_h = 250
 
-    name_text = "NAME: " + data["first_name"] + " " + data["last_name"]
+    name_text = "NAME: " + data["first_name"].upper() + " " + data["last_name"].upper()
     name_text_offset_w = 90
     name_text_offset_h = 290
     name_text_offset = (name_text_offset_w, name_text_offset_h)
@@ -165,7 +189,7 @@ def add_shadow(image_editable, offset_w, offset_h, text, font):
         font (ImageFont): text font
     """
     shadow = (52, 56, 53, 100)
-    text_color = (52, 56, 53, 250)
+    text_color = (0, 0, 0, 255)
     image_editable.text((offset_w - 1 , offset_h), text, font=font, fill=shadow)
     image_editable.text((offset_w + 1 , offset_h), text, font=font, fill=shadow)
     image_editable.text((offset_w, offset_h - 1), text, font=font, fill=shadow)
