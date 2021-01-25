@@ -88,6 +88,12 @@ def get_form_data(form):
 #     return os.path.join(app.config['UPLOAD_FOLDER'], filename)
 
 def generate_image(data, qr_path):
+    """Generate membership card image
+
+    Args:
+        data (dict): Dictionary of useful data
+        qr_path (string): Path to QR code image
+    """
     base = Image.open(BASE_IMAGES[data["user_type"]]).convert("RGBA")
     logo = Image.open(qr_path).convert("RGBA")
     
@@ -96,8 +102,6 @@ def generate_image(data, qr_path):
     QRSIZE = int(base_w/7)
     # Resize image to keep ratio
     logo = logo.resize((QRSIZE, QRSIZE), Image.ANTIALIAS)
-    # Remove white background
-    # logo = remove_white_pixels(logo)
 
     # logo.show()
     base = base.resize((1005, 639), Image.ANTIALIAS)
