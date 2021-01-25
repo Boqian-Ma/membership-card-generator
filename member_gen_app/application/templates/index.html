@@ -20,46 +20,30 @@
                 <input type="text" class="form-control" name="lastName" id="lastName" required>
             </div>
         </div>
+        <br>
+        <div class="form-row row">
+            <div class="form-group col-5">
+                <label for="user-types">Select User Level</label>
+                <div class="form-group" id="user-types" ></div> 
+            </div>
+            <div class="form-group col-1">
+                <label for="dash"></label>
+                <input class="form-control text-center" type="text" placeholder="-" id="dash" disabled>
+            </div>
+            <div class="form-group col-6"> 
+                <label for="user-types">User Reference Number</label>
+                <input type="number" class="form-control" name="refNumber" id="refNumber" required>
+            </div>
+        </div>
+        <br>
         <div class="form-group mb-3">
           <label for="cardNumber" class="form-label">Card Number (UID)</label>
-          <input type="number" class="form-control" name="cardNumber" id="cardNumber" required>
+          <input type="number" class="form-control" name="UID" id="UID" required>
         </div>
 
         <div class="form-group mb-3">
             <label for="walletAddress" class="form-label">Wallet Address</label>
             <input type="text" class="form-control" name="walletAddress" id="walletAddress" required>
-        </div>
-
-        <!-- <div class="form-row row" id="coin-type">
-            <label for="coin-type" class="form-label">Coins</label>
-
-            <div class="form-group col-1">
-                <input  type="checkbox" id="btc" name="coins" value="BTC">
-                <label for="btc">BTC</label>
-            </div>
-    
-            <div class="form-group col-1">
-                <input type="checkbox" id="eth" name="coins" value="ETH">
-                <label for="eth">ETH</label>
-            </div>
-    
-            <div class="form-group col-1">
-                <input type="checkbox" id="pmgt" name="coins" value="PMGT">
-                <label for="pmgt">PMGT</label>
-            </div>
-    
-            <div class="form-group col-1">
-                <input type="checkbox" id="ustd" name="coins" value="USDT">
-                <label for="ustd">USDT</label>
-            </div>
-
-        
-        </div> -->
-
-
-        <div class="form-row row">
-            <label for="user-types">Select User Level</label>
-            <div class="form-group col-6" id="user-types" ></div>
         </div>
 
         <br>
@@ -149,7 +133,7 @@
             "D": "Certified Operator"
         }
         // First value
-        var user_options = '<select class="form-select form-group col-2" name="userType" required>';
+        var user_options = '<select class="form-select form-group col-6" name="userType" required>';
         for (var key in types) {
             user_options += '<option value="' + key + '">' + types[key] + ' - ' +  key + '</option>';
         }

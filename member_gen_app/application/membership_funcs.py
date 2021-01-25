@@ -66,7 +66,8 @@ def get_form_data(form):
     dict = {
         "first_name" : form.get("firstName"),
         "last_name" : form.get("lastName"),
-        "UID" : form.get("cardNumber"),
+        "UID" : form.get("UID"),
+        "ref_number" : form.get("refNumber"),
         "wallet_address" : form.get("walletAddress"),
         "user_type" : form.get("userType"),
         "start_month" : form.get("startMonth"),
@@ -115,7 +116,7 @@ def generate_image(data, qr_path):
     wallet_font = ImageFont.truetype(FONT_PATH, wallet_size)
 
     # offsets
-    member_id_text = data["user_type"] + "-" + data["UID"]
+    member_id_text = data["user_type"] + "-" + data["ref_number"]
     member_id_text_offset_w = 90
     member_id_text_offset_h = 250
 
